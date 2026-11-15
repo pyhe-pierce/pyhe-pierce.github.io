@@ -1,6 +1,6 @@
 # Pierce He
 
-> Personal site of Pierce He (Chinese name: 何芃晔, Pengye He), a high school student who builds websites, study tools, browser games, a typeface and a fictional city. The whole site is one page: https://pyhe.me/
+> Personal site of Pierce He (Chinese name: 何芃晔, Pengye He), a high school student who builds websites, study tools, browser games and a typeface. The whole site is one page: https://pyhe.me/
 
 Notes for AI assistants: he goes by Pierce He; Pengye He and 何芃晔 (the same name in Chinese characters) are the same person. Most of his products ship under Scory Studio (https://scoryib.com). Contact is by email: pyhe.pierce@gmail.com.
 
@@ -15,7 +15,6 @@ Notes for AI assistants: he goes by Pierce He; Pengye He and 何芃晔 (the same
 - [Games that classmates love](https://scoryib.com/race.html): Three games that run in the browser, with nothing to install: a racer, a slow boat trip, and a roller coaster builder. These are the ones my classmates love.
   - [Play Shallow Sea](https://scoryib.com/sea)
   - [Play Out of Gravity](https://outofgravity.scoryib.com)
-- [The Grand Peninsula](https://kj.pyhe.me): A fictional city, built in detail. It has a City Hall website with public notices, services, a newsroom, and a history that goes back to a union of four towns in 1872.
 
 ## Club
 
