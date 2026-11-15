@@ -26,7 +26,7 @@
 *{box-sizing:border-box;margin:0;padding:0}
 html{background:#cfd2ee}
 body{font-family:"Scory Serif",Georgia,serif;color:var(--ink);-webkit-font-smoothing:antialiased;overflow-x:hidden}
-#track{height:1000vh}
+#track{height:1250vh}
 #stage{position:fixed;inset:0;overflow:hidden;background:var(--sky);contain:strict;--fg:var(--ink);color:var(--fg)}
 .t{position:absolute;left:0;top:0;will-change:transform}
 canvas.cloud{pointer-events:none}
@@ -96,6 +96,29 @@ canvas.cloud{pointer-events:none}
 #club .btn{display:inline-block;margin-top:clamp(18px,4vh,40px);padding:.72em 1.3em;border-radius:999px;background:var(--fg);color:var(--ink);text-decoration:none;font-size:clamp(15px,1.2vw,18px);transition:transform .25s cubic-bezier(.2,.9,.25,1.3)}
 #club .btn:hover{transform:translateY(-2px)}
 @media (max-width:700px){#club dl{grid-template-columns:1fr;gap:10px}}
+#act{position:absolute;inset:0;z-index:37;pointer-events:none;visibility:hidden;color:var(--fg)}
+#act .head{position:absolute;left:var(--ax);top:var(--hy);opacity:var(--lt,1)}
+#act .kick{font-size:13px;letter-spacing:.1em;opacity:.65}
+#act h2{font-weight:400;font-size:var(--Fa);line-height:1;letter-spacing:-.03em;margin-top:.14em}
+#act .sub{font-size:clamp(15px,1.3vw,19px);opacity:.8;margin-top:.5em;max-width:26em;line-height:1.35}
+#act svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+#act svg path{fill:none;stroke:var(--fg);stroke-opacity:.45;stroke-width:1}
+#act .star{position:absolute;left:0;top:0;pointer-events:auto;cursor:pointer;outline:none}
+#act .pt{position:absolute;left:-5px;top:-5px;width:10px;height:10px;border-radius:50%;background:var(--fg);box-shadow:0 0 0 0 rgba(255,246,224,0);transition:box-shadow .5s,transform .4s cubic-bezier(.2,.9,.25,1.4)}
+#act .pt::after{content:"";position:absolute;left:-10px;top:-10px;right:-10px;bottom:-10px;border-radius:50%}
+#act .star.on .pt{box-shadow:0 0 14px 5px rgba(255,240,214,.45)}
+#act .star.sel .pt{transform:scale(1.5)}
+#act .star:focus-visible .pt{outline:1.5px solid var(--fg);outline-offset:5px}
+#act .lab{position:absolute;left:-4px;width:var(--lw);opacity:var(--lt,1);transition:opacity .3s}
+#act .lab.up{bottom:16px}#act .lab.dn{top:16px}#act .lab.side{left:20px;top:-.95em}
+#act .lab b{display:block;font-weight:400;font-size:11.5px;letter-spacing:.09em;text-transform:uppercase;opacity:.68}
+#act .lab span{display:block;font-size:clamp(14px,1.08vw,16.5px);line-height:1.22;margin-top:.22em}
+#act .star:hover .lab span{text-decoration:underline;text-underline-offset:.2em;text-decoration-thickness:1px}
+#act .cap{position:absolute;left:var(--ax);top:var(--cy);width:min(88vw,36rem);opacity:var(--lt,1)}
+#act .cap b{display:block;font-weight:400;font-size:12px;letter-spacing:.1em;text-transform:uppercase;opacity:.65}
+#act .cap p{font-size:clamp(17px,1.65vw,24px);line-height:1.34;margin-top:.35em}
+#act .cap.swap>*{animation:capin .45s ease both}
+@keyframes capin{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
 #about{width:min(86vw,35rem);font-size:clamp(20px,2.25vw,33px);line-height:1.27;letter-spacing:-.01em}
 #contact{font-size:clamp(18px,2vw,28px);white-space:nowrap;text-align:center}
 #contact .pre{font-size:clamp(14px,1.2vw,18px);opacity:.75;margin-bottom:.45em}
@@ -129,6 +152,7 @@ canvas.cloud{pointer-events:none}
 #cap a{color:inherit;text-underline-offset:.22em}
 #nav a{color:inherit;text-decoration:none}
 #nav a+a,#nav a+span,#nav span+a{margin-left:1.6em}
+@media (max-width:520px){#nav{font-size:13px}#nav a+a{margin-left:.95em}}
 .card p{font-size:clamp(13px,1.05vw,16px);line-height:1.35;margin-top:.5em;padding-left:var(--ind);opacity:.78;max-width:19em}
 #mark{white-space:nowrap;font-size:var(--F);line-height:1;letter-spacing:-.03em}
 #mark .gap{display:inline-block;width:.236em;height:0;vertical-align:baseline}
@@ -140,7 +164,7 @@ canvas.cloud{pointer-events:none}
 <body>
 <div id="track"></div>
 <div id="stage">
-  <div id="nav"><a href="#top" data-go="top">pyhe.me</a><div><a href="#about" data-go="about">About</a><a href="#work" data-go="work">Work</a><a href="#qdsac" data-go="club">QDSAC</a><a href="#contact" data-go="contact">Contact</a></div></div>
+  <div id="nav"><a href="#top" data-go="top">pyhe.me</a><div><a href="#about" data-go="about">About</a><a href="#work" data-go="work">Work</a><a href="#qdsac" data-go="club">QDSAC</a><a href="#activity" data-go="act">Activity</a><a href="#contact" data-go="contact">Contact</a></div></div>
   <div id="glow"></div><div id="scrim" class="t"></div><div id="tint"></div><div id="detail" aria-hidden="true"><div class="wrap"></div></div><canvas id="fx"></canvas><div id="grain"></div>
 </div>
 <script>
@@ -278,6 +302,37 @@ const cards=PROJECTS.map((p,i)=>{const c=el("div","t card paper",stage,34+ (i%2)
   const t=shadowed(track(c,15)); t.fade=1; return t});
 const capEl=el("div","t",stage,36); capEl.id="cap"; capEl.innerHTML=`Selected work. Most of it ships under <a href="https://scoryib.com" target="_blank" rel="noopener">Scory Studio</a>.`; const cap=track(capEl,15); cap.fade=1;
 const aboutEl=el("div","t",stage,36); aboutEl.id="about"; aboutEl.innerHTML=`<p>I'm Pierce He. I build things for the web: study tools, games, a typeface and one fictional city. None of it is finished, and that is what the six dots are for.</p>`; const about=track(aboutEl,6); about.fade=1;
+const ACT=[
+  ["Oct 2025","London choral festival","Went to London to sing at the Dwight global choral festival."],
+  ["Apr 2026","Founded QDSAC","Started the Qibao Dwight Student AI Committee, with two faculty advisors behind us."],
+  ["Apr 2026","SAS AI workshop, 1st place","Invited to an AI workshop at SAS, and came away with first place."],
+  ["May 2026","Dwight trustees' lunch","Invited to the Dwight trustees' lunch, where I presented my AI projects to Dr. Blake Spahn of Dwight School New York."],
+  ["Summer 2026","Dartmouth Future Builders","A summer at Dartmouth's Future Builders program. Five of us built Blue Scoops there."],
+  ["Sep 2026","Student Ambassador","Became a Student Ambassador for the school."],
+  ["Sep 2026","Opening ceremony speech","Spoke to the whole school at the opening ceremony about Scory, Blue Scoops and what I learned at Dartmouth."],
+  ["Nov 2026","Admissions talk","Gave the school's admissions talk to more than a hundred prospective students and parents: growing up, AI, and clubs."]
+];
+const actEl=el("div","",stage,null); actEl.id="act";
+actEl.innerHTML=`<div class="head"><div class="kick">ACTIVITY \u00b7 2025\u20132026</div><h2>Along the way</h2><p class="sub">Things I joined, started, won, or stood up and talked about.</p></div><svg aria-hidden="true">${ACT.slice(1).map(()=>"<path/>").join("")}</svg>`+
+  ACT.map((a,i)=>`<div class="star" tabindex="0" role="button" aria-label="${a[0]}: ${a[1]}"><i class="pt"></i><div class="lab"><b>${a[0]}</b><span>${a[1]}</span></div></div>`).join("")+`<div class="cap" aria-live="polite"><b></b><p></p></div>`;
+const actStars=[...actEl.querySelectorAll(".star")], actPaths=[...actEl.querySelectorAll("svg path")], capEl2=actEl.querySelector(".cap");
+let ACTP=[],ACTT=[],ACTH=0,actLen=[],actSel=null,actShown=-1,actLit=-1,actVis=-1,actKey="";
+actStars.forEach((st,i)=>{const pick=()=>{actSel=i;actKey="";pushActive=true;render(cur)};st.addEventListener("click",pick);st.addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();pick()}})});
+function renderAct(s){
+  const tIn=sstep(S2-.004,S2+.026,s), tOut=1-sstep(SA-.03,SA+.004,s), textO=tIn*tOut*(1-dMix);
+  const skyO=Math.max(textO, tIn*(s>SA?.24+.76*(1-sstep(SA-.03,SA+.05,s)):1)*(1-sstep(.985,1,s)*.0))*(1-dMix);
+  const vis=skyO>.004?1:0; if(vis!==actVis){actEl.style.visibility=vis?"visible":"hidden";actVis=vis}
+  if(!vis)return;
+  let lit=-1; for(let i=0;i<ACTT.length;i++)if(s>=ACTT[i]-.002)lit=i;
+  if(lit!==actLit){actLit=lit;actSel=null}
+  const shown=actSel!=null?actSel:Math.max(0,lit);
+  const key=skyO.toFixed(3)+"|"+(textO/Math.max(skyO,.001)).toFixed(3)+"|"+shown+"|"+lit+"|"+s.toFixed(4);
+  if(key===actKey)return; actKey=key;
+  actEl.style.opacity=skyO.toFixed(3); actEl.style.setProperty("--lt",clamp(textO/Math.max(skyO,.001),0,1).toFixed(3));
+  actStars.forEach((st,i)=>{const on=s>=ACTT[i]-.002, a=sstep(ACTT[i]-.012,ACTT[i],s); st.style.opacity=(.12+.88*a).toFixed(3); st.classList.toggle("on",on); st.classList.toggle("sel",i===shown&&lit>=0)});
+  actPaths.forEach((pth,i)=>{const a=ACTT[i]+ACTH, b=ACTT[i+1], u=clamp((s-a)/(b-a||1),0,1), L=actLen[i]||0; pth.style.strokeDashoffset=(L*(1-ease(u))).toFixed(1)});
+  if(shown!==actShown){actShown=shown; const a=ACT[shown]; capEl2.querySelector("b").textContent=a[0]+" \u00b7 "+a[1]; capEl2.querySelector("p").textContent=a[2]; capEl2.classList.remove("swap"); void capEl2.offsetWidth; capEl2.classList.add("swap")}
+}
 const clubEl=el("div","t",stage,36); clubEl.id="club"; clubEl.innerHTML=`<div class="kick">CLUB</div><h2><i class="slot"></i>QDSAC</h2>
 <p class="lead">The Qibao Dwight Student AI Committee, a student-led club set up in April 2026. Its line is short: understand AI, use it responsibly, build with it. I lead it, with two faculty advisors behind us.</p>
 <dl><div><dt>My role</dt><dd>Leader</dd></div><div><dt>What we run</dt><dd>Sharing sessions, campus surveys, workshops, and seasonal challenges that bring AI into art, code and research</dd></div>
@@ -371,6 +426,25 @@ function layout(){
     const qx=narrow?W*.06:W*.065, qy=Math.max(narrow?70:96,(H-clubEl.offsetHeight)/2-H*.02), sl=clubEl.querySelector(".slot"), r0=clubEl.getBoundingClientRect(), r1=sl.getBoundingClientRect();
     CLD=Fc*.3; CLX=qx+(r1.left-r0.left)-Fc*.29; CLY=qy+(r1.top-r0.top)-Fc*.245; club.ox=0; club.oy=0;
     club.frames=[[0,{x:qx,y:qy+22,o:0}],[SB+.004,{x:qx,y:qy+22,o:0}],[SB+.05,{x:qx,y:qy,o:1},easeOut],[S2-.045,{x:qx,y:qy,o:1}],[S2+.008,{x:qx,y:qy-16,o:0}]]; }
+  { /* Activity: stars across the night sky, joined in time order */
+    const ax=narrow?W*.06:W*.065, n=ACT.length, span=SA-S2;
+    actEl.style.setProperty("--ax",ax+"px"); actEl.style.setProperty("--Fa",clamp(W*(narrow?.1:.052),36,84)+"px");
+    actEl.style.setProperty("--hy",(narrow?H*.085:H*.12)+"px");
+    const head=actEl.querySelector(".head"); const hb=(narrow?H*.085:H*.12)+head.offsetHeight;
+    if(narrow){
+      const y0=hb+H*.035, cyH=H*.17, top=y0+cyH, step=(H*.94-top)/(n-1);
+      actEl.style.setProperty("--cy",y0+"px"); actEl.style.setProperty("--lw",(W*.7)+"px");
+      ACTP=ACT.map((a,i)=>[W*(.1+(i%2?.035:0)+(i%3===2?.02:0)),top+step*i]);
+    } else {
+      const ys=[.47,.62,.43,.64,.49,.6,.41,.56], gap=.82/(n-1);
+      actEl.style.setProperty("--cy",(H*.8)+"px"); actEl.style.setProperty("--lw",Math.min(W*gap-18,190)+"px");
+      ACTP=ACT.map((a,i)=>[W*(.09+gap*i),H*ys[i]]);
+    }
+    ACTT=ACT.map((a,i)=>S2+span*(.1+i*.105)); ACTH=span*.04;
+    actStars.forEach((st,i)=>{st.style.transform=`translate(${ACTP[i][0]}px,${ACTP[i][1]}px)`; const lab=st.querySelector(".lab");
+      lab.className="lab "+(narrow?"side":(i<n-1&&ACTP[i+1][1]>ACTP[i][1]?"up":"dn"))});
+    actPaths.forEach((pth,i)=>{const a=ACTP[i],b=ACTP[i+1]; pth.setAttribute("d",`M${a[0]} ${a[1]}L${b[0]} ${b[1]}`); const L=Math.hypot(b[0]-a[0],b[1]-a[1]); actLen[i]=L; pth.style.strokeDasharray=L; pth.style.strokeDashoffset=L});
+    actKey=""; actShown=-1; }
   /* letters + dots */
   ORDER.forEach((ch,i)=>{
     const gl=G[ch],[dx,dy]=row[i],ang=ANG[ch],dir=(i%2?1:-1);
@@ -387,7 +461,8 @@ function layout(){
 
   { /* re-key the last dot from story position to scroll position, then add its stops inside the held beats */
     const D=dots[ORDER[LAST]], gl=G[ORDER[LAST]], f=D.frames.map(fr=>[sOf(fr[0]),fr[1],fr[2]]), n=f.length, sQ=CLD/(2*gl.r*k), atB=f[n-3][1], Q={x:CLX,y:CLY,r:0,s:sQ,o:1};
-    D.byS=1; D.frames=f.slice(0,n-3).concat([[S1,atB],[SB-.03,atB],[SB+.035,Q],[S2,Q],f[n-2],f[n-1]]); }
+    const sStar=13/(2*gl.r*k), walk=[]; ACTP.forEach((pt,i)=>{const st={x:pt[0],y:pt[1],r:0,s:sStar,o:1}; walk.push([ACTT[i],st],[ACTT[i]+ACTH,st])});
+    D.byS=1; D.frames=f.slice(0,n-3).concat([[S1,atB],[SB-.03,atB],[SB+.035,Q],[S2,Q]],walk,[f[n-2],f[n-1]]); }
   /* hero copy */
   hero.frames=[[0,{x:narrow?W*.06:W*.065,y:narrow?H*.12:H*.15,o:1}],[.05,{x:narrow?W*.06:W*.065,y:narrow?H*.12:H*.15,o:1}],[.13,{x:narrow?W*.06:W*.065,y:H*.1,o:0}]];
   hint.frames=[[0,{x:narrow?W*.06:W*.065,y:H*.9-34,o:1}],[.03,{x:narrow?W*.06:W*.065,y:H*.9-34,o:0}]];
@@ -461,16 +536,17 @@ document.addEventListener("pointerleave",()=>{ptx=pty=-9999;mxT=myT=0});
 /* ---------- scroll engine ----------
    Scroll position s runs 0..1. The story position p follows it, except for one held stop
    (the QDSAC page) where p waits while s keeps moving. */
-const HOLD_P=.875,S1=.63,SB=.735,S2=.87;
-const storyP=s=>s<=S1?s/S1*HOLD_P:s<=S2?HOLD_P:HOLD_P+(s-S2)/(1-S2)*(1-HOLD_P);
-const sOf=p=>p<=HOLD_P?p/HOLD_P*S1:S2+(p-HOLD_P)/(1-HOLD_P)*(1-S2);
+const HOLD_P=.875,S1=.504,SB=.588,S2=.696,SA=.9;
+const storyP=s=>s<=S1?s/S1*HOLD_P:s<=SA?HOLD_P:HOLD_P+(s-SA)/(1-SA)*(1-HOLD_P);
+const sOf=p=>p<=HOLD_P?p/HOLD_P*S1:SA+(p-HOLD_P)/(1-HOLD_P)*(1-SA);
+const skyP=(s,p)=>s<S2?p:Math.max(p,HOLD_P+.06*sstep(S2,S2+(SA-S2)*.35,s));
 function sample(t,p){
   const f=t.frames; if(p<=f[0][0])return f[0][1]; const n=f.length; if(p>=f[n-1][0])return f[n-1][1];
   let i=1; while(f[i][0]<p)i++; const A=f[i-1],B=f[i]; let u=(p-A[0])/(B[0]-A[0]||1); u=t.lin?u:(B[2]||ease)(u);
   const a=A[1],b=B[1],o={}; for(const key in b)o[key]=lerp(a[key]??b[key],b[key],u); return o;
 }
 function render(s){
-  const p=storyP(s); sky(p); pushActive=false;
+  const p=storyP(s); sky(skyP(s,p)); pushActive=false; renderAct(s);
   if(dMix!==lastDM){fx.style.opacity=(1-dMix).toFixed(3);lastDM=dMix}
   for(const t of T){ if(!t.frames.length)continue; const v=sample(t,t.byS?s:p); let o=v.o??1, rot=v.r||0;
     if(t.fade)o*=1-dMix;
@@ -563,7 +639,7 @@ function tick(now){
   requestAnimationFrame(tick);
 }
 addEventListener("scroll",readScroll,{passive:true});
-document.querySelectorAll("[data-go]").forEach(a=>a.addEventListener("click",e=>{e.preventDefault();closeDetail();const max=document.documentElement.scrollHeight-innerHeight;scrollTo({top:max*({top:0,about:sOf(.31),work:sOf(.67),club:(SB+S2)/2+.01,contact:1})[a.dataset.go],behavior:reduce?"auto":"smooth"})}));
+document.querySelectorAll("[data-go]").forEach(a=>a.addEventListener("click",e=>{e.preventDefault();closeDetail();const max=document.documentElement.scrollHeight-innerHeight;scrollTo({top:max*({top:0,about:sOf(.31),work:sOf(.67),club:(SB+S2)/2+.01,act:S2+(SA-S2)*.9,contact:1})[a.dataset.go],behavior:reduce?"auto":"smooth"})}));
 let rz; addEventListener("resize",()=>{clearTimeout(rz);rz=setTimeout(()=>{layout();readScroll()},120)});
 (document.fonts&&document.fonts.ready?document.fonts.ready:Promise.resolve()).then(()=>{
   layout();readScroll();cur=target;
