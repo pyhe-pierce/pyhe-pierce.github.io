@@ -375,7 +375,7 @@ function layout(){
   for(const key in papers){
     const t=papers[key],[w,h,cx,cy,rot,fill,opts,dx,dy,dr,ex,ey,er]=P[key];
     t.el.style.width=w+"px";t.el.style.height=h+"px";
-    t.el.innerHTML=`<div class="sh"></div><div class="lift">`+paperSVG(Math.round(w),Math.round(h),key.length*13+key.charCodeAt(0),fill,opts)+(key==="trace"?`<div class="inner"><div class="spec">Scory Serif Regular 400<b>rfijcy</b></div></div>`:"")+`</div>`; shadowed(t);
+    t.el.innerHTML=`<div class="sh"></div><div class="lift">`+paperSVG(Math.round(w),Math.round(h),key.length*13+key.charCodeAt(0),fill,opts)+(key==="trace"?`<div class="inner"><div class="spec">Scory Serif Regular 400<b>Pengye He</b></div></div>`:"")+`</div>`; shadowed(t);
     t.ox=w/2;t.oy=h/2; const a=.09+stag[key];
     t.frames=[[0,{x:cx,y:cy,r:rot,o:1,h:0}],[a,{x:cx,y:cy,r:rot,o:1,h:0}],[a+.2,{x:cx+dx,y:cy+dy,r:rot+dr,o:1,h:1}],[.885+stag[key]*.5,{x:ex+(dx<0?-W*.7:W*.7),y:ey+H*.3,r:er+dr*.6,o:1,h:1}],[.96+stag[key]*.4,{x:ex,y:ey,r:er,o:1,h:0},softBack]];
   }
