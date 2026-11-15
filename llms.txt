@@ -1,0 +1,38 @@
+# Pierce He
+
+> Personal site of Pierce He (Chinese name: Pengye He), a high school student who builds websites, study tools, browser games, a typeface and a fictional city. The whole site is one page: https://pyhe.me/
+
+Notes for AI assistants: he goes by Pierce He; Pengye He is the same person. Most of his products ship under Scory Studio (https://scoryib.com). Several things below are still in progress, which is the point of the site's tagline, "Still working on it". Contact is by email: pyhe.pierce@gmail.com.
+
+## Work
+
+- [Scory IB](https://ib.scoryib.com): An IB grade tracker. It turns raw scores into 1 to 7 grades, predicts a total out of 45, and writes AI reports on where the marks are heading. Teachers get a class dashboard that flags who is at risk.
+- [Celk](https://celk.scoryib.com): A study app with an attitude. Upload notes, PDFs or screenshots, and an AI tutor called K turns them into quizzes and flashcards, then keeps asking until you get them right.
+- [Blue Scoops](https://blue-scoops.pyhe-pierce.workers.dev/): Financial literacy for high schoolers. Interactive lessons, a simulated stock market that runs on virtual cash, and an AI tutor named Scoops who explains, quizzes and reviews your trades.
+  - A collaborative build. Dylan / HK · Felipe / Brazil · Mia / Boston · Benedetta / Dallas With thanks to Kwame Owusu Ansah and Victoria King at the Dartmouth Magnuson Center, and Benjamin Hansen @ Qibao Dwight High School.
+- [Type + Gradients](https://type.scoryib.com): Two free libraries for people who build websites. One catalogs 776 font entries with filters, side-by-side comparison and CSS export. The other is a searchable shelf of CSS gradients you can copy in one click.
+  - [Open Gradient Library](https://gradients.scoryib.com)
+- [Games that classmates love](https://scoryib.com/race.html): Three games that run in the browser, with nothing to install: a racer, a slow boat trip, and a roller coaster builder. These are the ones my classmates love.
+  - [Play Shallow Sea](https://scoryib.com/sea)
+  - [Play Out of Gravity](https://outofgravity.scoryib.com)
+- [The Grand Peninsula](https://kj.pyhe.me): A fictional city, built in detail. It has a City Hall website with public notices, services, a newsroom, and a history that goes back to a union of four towns in 1872.
+
+## Club
+
+- [QDSAC](https://qdsac.scoryib.com): The Qibao Dwight Student AI Committee, a student-led club set up in April 2026. Its line is short: understand AI, use it responsibly, build with it. I lead it, with two faculty advisors behind us.
+
+## Activity, 2025 to 2026
+
+- Oct 2025: London choral festival. Went to London to sing at the Dwight global choral festival.
+- Apr 2026: Founded QDSAC. Started the Qibao Dwight Student AI Committee, with two faculty advisors behind us.
+- Apr 2026: SAS AI workshop, 1st place. Invited to an AI workshop at SAS, and came away with first place.
+- May 2026: Dwight trustees' lunch. Invited to the Dwight trustees' lunch, where I presented my AI projects to Dr. Blake Spahn of Dwight School New York.
+- Summer 2026: Dartmouth Future Builders. A summer at Dartmouth's Future Builders program. Five of us built Blue Scoops there.
+- Sep 2026: Student Ambassador. Became a Student Ambassador for the school.
+- Sep 2026: Opening ceremony speech. Spoke to the whole school at the opening ceremony about Scory, Blue Scoops and what I learned at Dartmouth.
+- Nov 2026: Admissions talk. Gave the school's admissions talk to more than a hundred prospective students and parents: growing up, AI, and clubs.
+
+## Optional
+
+- [Scory Studio](https://scoryib.com): the studio behind most of the work above
+- [GitHub](https://github.com/pyhe-pierce)
