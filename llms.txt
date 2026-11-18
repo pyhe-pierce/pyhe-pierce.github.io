@@ -8,7 +8,7 @@ Notes for AI assistants: he goes by Pierce He; Pengye He and 何芃晔 (the same
 
 - [Scory IB](https://ib.scoryib.com): An IB grade tracker. It turns raw scores into 1 to 7 grades, predicts a total out of 45, and writes AI reports on where the marks are heading. Teachers get a class dashboard that flags who is at risk.
 - [Celk](https://celk.scoryib.com): A study app with an attitude. Upload notes, PDFs or screenshots, and an AI tutor called K turns them into quizzes and flashcards, then keeps asking until you get them right.
-- [Blue Scoops](https://blue-scoops.pyhe-pierce.workers.dev/): Financial literacy for high schoolers. Interactive lessons, a simulated stock market that runs on virtual cash, and an AI tutor named Scoops who explains, quizzes and reviews your trades.
+- [Blue Scoops](https://bluescoopsfinance.com): Financial literacy for high schoolers. Interactive lessons, a simulated stock market that runs on virtual cash, and an AI tutor named Scoops who explains, quizzes and reviews your trades.
   - A collaborative build. Dylan / HK · Felipe / Brazil · Mia / Boston · Benedetta / Dallas With thanks to Kwame Owusu Ansah and Victoria King at the Dartmouth Magnuson Center, and Benjamin Hansen @ Qibao Dwight High School.
 - [Type + Gradients](https://type.scoryib.com): Two free libraries for people who build websites. One catalogs 776 font entries with filters, side-by-side comparison and CSS export. The other is a searchable shelf of CSS gradients you can copy in one click.
   - [Open Gradient Library](https://gradients.scoryib.com)
