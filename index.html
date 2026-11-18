@@ -82,7 +82,7 @@ canvas.cloud{pointer-events:none}
 #detail .idx{margin-top:clamp(16px,4vh,40px);font-size:13px;letter-spacing:.1em;opacity:.6}
 #detail h2{font-weight:400;font-size:var(--Ft);line-height:.98;letter-spacing:-.03em;margin-top:.14em;padding-left:.46em}
 #detail .slot{display:inline-block;width:0;height:0;vertical-align:baseline}
-#detail .lead{font-size:clamp(18px,1.9vw,27px);line-height:1.36;max-width:27em;margin-top:.9em}
+#detail .lead{font-size:clamp(18px,1.6vw,24px);line-height:1.4;max-width:27em;margin-top:.9em}
 #detail dl{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(14px,2.6vw,40px);margin-top:clamp(22px,4.5vh,48px);max-width:58rem}
 #detail dt{font-size:12px;letter-spacing:.1em;text-transform:uppercase;opacity:.6}
 #detail dd{font-size:clamp(15px,1.25vw,18px);line-height:1.36;margin-top:.35em}
@@ -165,6 +165,12 @@ canvas.cloud{pointer-events:none}
 #colophon{font-size:clamp(13px,1.05vw,16px);opacity:.7;text-align:center;white-space:nowrap}
 #grain{position:absolute;inset:0;pointer-events:none;z-index:60}
 @media (prefers-reduced-motion:reduce){#hint i{animation:none}}
+#detail dl{display:block!important;max-width:var(--tw,40rem)}
+#detail dl>div{display:grid;grid-template-columns:7.2em minmax(0,1fr);gap:1em;padding:.72em 0;border-top:1px solid rgba(22,22,29,.16)}
+#detail dl>div:last-child{border-bottom:1px solid rgba(22,22,29,.16)}
+#detail dt{padding-top:.28em}
+#detail dd{margin-top:0!important}
+@media (max-width:520px){#detail dl>div{grid-template-columns:1fr;gap:.25em}}
 </style>
 </head>
 <body>
@@ -607,10 +613,9 @@ function measureDetail(){
 function fillDetail(i){
   const p=PROJECTS[i], n=PROJECTS.length, nx=(i+1)%n;
   const hasS=!!(p.shots&&p.shots.length), nS=hasS?p.shots.length:0, stepK=nS>3?.15:.17;
-  const avail=Math.min(W,1180), padL=clamp(W*.065,20,96), padR=clamp(W*.055,20,84), GAP=56, MINTEXT=420, SPREAD=1.16;
-  let Ws=hasS?Math.min(avail*.42,640,(H*.72)/(.62+stepK*(nS-1))):0, tw=avail-padL-padR-Ws*SPREAD-GAP;
-  if(hasS&&tw<MINTEXT){Ws=Math.max(0,(avail-padL-padR-GAP-MINTEXT)/SPREAD); tw=MINTEXT}
-  const wide=hasS?Ws>=300:false; if(hasS&&!wide){Ws=Math.min(W-2*padL-8,520); tw=avail-2*padL}
+  const avail=hasS?W:Math.min(W,1180), padL=clamp(W*.065,20,96), padR=clamp(W*.055,20,84), GAP=clamp(W*.05,40,96), SPREAD=1.14;
+  let tw=clamp(W*.4,440,600), Ws=hasS?Math.min((avail-padL-padR-GAP-tw)/SPREAD,720,(H*.74)/(.62+stepK*(nS-1))):0;
+  const wide=hasS?Ws>=320:false; if(hasS&&!wide){Ws=Math.min(W-2*padL-8,520); tw=avail-2*padL}
   if(!hasS)tw=avail-2*padL;
   wrapEl.classList.toggle("has-shots",hasS); wrapEl.classList.toggle("side",wide); wrapEl.style.setProperty("--tw",tw+"px");
   const longest=Math.max(...p.t.split(" ").map(x=>x.length)), fitFt=(wide?tw:avail-2*padL)/(longest*.5+.6);
