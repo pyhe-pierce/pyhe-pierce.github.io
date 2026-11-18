@@ -29,7 +29,7 @@
 .sr-only{position:absolute!important;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);clip-path:inset(50%);white-space:nowrap;border:0}
 html{background:#cfd2ee}
 body{font-family:"Scory Serif",Georgia,serif;color:var(--ink);-webkit-font-smoothing:antialiased;overflow-x:hidden}
-#track{height:1250vh}
+#track{height:1115vh}
 #stage{position:fixed;inset:0;overflow:hidden;background:var(--sky);contain:strict;--fg:var(--ink);color:var(--fg)}
 .t{position:absolute;left:0;top:0;will-change:transform}
 canvas.cloud{pointer-events:none}
@@ -120,7 +120,9 @@ canvas.cloud{pointer-events:none}
 #act .cap{position:absolute;left:var(--ax);top:var(--cy);width:min(88vw,36rem);opacity:var(--lt,1)}
 #act .cap b{display:block;font-weight:400;font-size:12px;letter-spacing:.1em;text-transform:uppercase;opacity:.65}
 #act .cap p{font-size:clamp(17px,1.65vw,24px);line-height:1.34;margin-top:.35em}
-#act .cap.swap>*{animation:capin .45s ease both}
+#act .cap.swap>b,#act .cap.swap>p{animation:capin .45s ease both}
+#act .cap .hint{display:block;font-style:normal;font-size:13px;opacity:.55;margin-top:.7em}
+@media (hover:none){#act .cap .hint{visibility:hidden}#act .cap .hint::before{content:"Tap a star.";visibility:visible}}
 @keyframes capin{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
 #about{width:min(86vw,35rem);font-size:clamp(20px,2.25vw,33px);line-height:1.27;letter-spacing:-.01em}
 #contact{font-size:clamp(18px,2vw,28px);white-space:nowrap;text-align:center}
@@ -318,23 +320,29 @@ const ACT=[
 ];
 const actEl=el("div","",stage,null); actEl.id="act";
 actEl.innerHTML=`<div class="head"><div class="kick">ACTIVITY \u00b7 2025\u20132026</div><h2>Along the way</h2><p class="sub">Things I joined, started, won, or stood up and talked about.</p></div><svg aria-hidden="true">${ACT.slice(1).map(()=>"<path/>").join("")}</svg>`+
-  ACT.map((a,i)=>`<div class="star" tabindex="0" role="button" aria-label="${a[0]}: ${a[1]}"><i class="pt"></i><div class="lab"><b>${a[0]}</b><span>${a[1]}</span></div></div>`).join("")+`<div class="cap" aria-live="polite"><b></b><p></p></div>`;
+  ACT.map((a,i)=>`<div class="star" tabindex="0" role="button" aria-label="${a[0]}: ${a[1]}"><i class="pt"></i><div class="lab"><b>${a[0]}</b><span>${a[1]}</span></div></div>`).join("")+`<div class="cap" aria-live="polite"><b></b><p></p><i class="hint">Hover or tap a star.</i></div>`;
 const actStars=[...actEl.querySelectorAll(".star")], actPaths=[...actEl.querySelectorAll("svg path")], capEl2=actEl.querySelector(".cap");
 let ACTP=[],ACTT=[],ACTH=0,actLen=[],actSel=null,actShown=-1,actLit=-1,actVis=-1,actKey="";
-actStars.forEach((st,i)=>{const pick=()=>{actSel=i;actKey="";pushActive=true;render(cur)};st.addEventListener("click",pick);st.addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();pick()}})});
+let actT0=0,actHover=null; const ACT_MS=2200;
+actStars.forEach((st,i)=>{const pick=()=>{actSel=i;actKey="";pushActive=true;render(cur)};st.addEventListener("click",pick);
+  st.addEventListener("pointerenter",e=>{if(e.pointerType==="mouse"){actHover=i;actKey="";render(cur)}});
+  st.addEventListener("pointerleave",e=>{if(e.pointerType==="mouse"){actHover=null;actKey="";render(cur)}});st.addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();pick()}})});
 function renderAct(s){
   const tIn=sstep(S2-.004,S2+.026,s), tOut=1-sstep(SA-.03,SA+.004,s), textO=tIn*tOut*(1-dMix);
   const skyO=Math.max(textO, tIn*(s>SA?.24+.76*(1-sstep(SA-.03,SA+.05,s)):1)*(1-sstep(.985,1,s)*.0))*(1-dMix);
   const vis=skyO>.004?1:0; if(vis!==actVis){actEl.style.visibility=vis?"visible":"hidden";actVis=vis}
   if(!vis)return;
-  let lit=-1; for(let i=0;i<ACTT.length;i++)if(s>=ACTT[i]-.002)lit=i;
-  if(lit!==actLit){actLit=lit;actSel=null}
-  const shown=actSel!=null?actSel:Math.max(0,lit);
-  const key=skyO.toFixed(3)+"|"+(textO/Math.max(skyO,.001)).toFixed(3)+"|"+shown+"|"+lit+"|"+s.toFixed(4);
+  const n=ACT.length, now=performance.now();
+  if(s<S2+.004){actT0=0;actSel=null}else if(!actT0)actT0=reduce?now-ACT_MS:now;
+  const g=actT0?clamp((now-actT0)/ACT_MS,0,1):0; if(actT0&&g<1)pushActive=true;
+  const at=i=>i/(n-1)*.86, lit=g<=0?-1:Math.min(n-1,Math.floor(g/.86*(n-1)+1e-6));
+  const shown=actHover!=null?actHover:actSel!=null?actSel:Math.max(0,lit);
+  const key=skyO.toFixed(3)+"|"+(textO/Math.max(skyO,.001)).toFixed(3)+"|"+shown+"|"+g.toFixed(3);
   if(key===actKey)return; actKey=key;
   actEl.style.opacity=skyO.toFixed(3); actEl.style.setProperty("--lt",clamp(textO/Math.max(skyO,.001),0,1).toFixed(3));
-  actStars.forEach((st,i)=>{const on=s>=ACTT[i]-.002, a=sstep(ACTT[i]-.012,ACTT[i],s); st.style.opacity=(.12+.88*a).toFixed(3); st.classList.toggle("on",on); st.classList.toggle("sel",i===shown&&lit>=0)});
-  actPaths.forEach((pth,i)=>{const a=ACTT[i]+ACTH, b=ACTT[i+1], u=clamp((s-a)/(b-a||1),0,1), L=actLen[i]||0; pth.style.strokeDashoffset=(L*(1-ease(u))).toFixed(1)});
+  actStars.forEach((st,i)=>{const a=sstep(at(i)-.06,at(i),g); st.style.opacity=(.1+.9*a).toFixed(3); st.style.pointerEvents=a>.5?"auto":"none"; st.classList.toggle("on",a>.5); st.classList.toggle("sel",i===shown&&lit>=0)});
+  actPaths.forEach((pth,i)=>{const u=clamp((g-at(i))/(at(i+1)-at(i)),0,1), L=actLen[i]||0; pth.style.strokeDashoffset=(L*(1-ease(u))).toFixed(1)});
+  capEl2.style.visibility=lit<0?"hidden":"visible";
   if(shown!==actShown){actShown=shown; const a=ACT[shown]; capEl2.querySelector("b").textContent=a[0]+" \u00b7 "+a[1]; capEl2.querySelector("p").textContent=a[2]; capEl2.classList.remove("swap"); void capEl2.offsetWidth; capEl2.classList.add("swap")}
 }
 const clubEl=el("div","t",stage,36); clubEl.id="club"; clubEl.innerHTML=`<div class="kick">CLUB</div><h2><i class="slot"></i>QDSAC</h2>
@@ -465,7 +473,7 @@ function layout(){
 
   { /* re-key the last dot from story position to scroll position, then add its stops inside the held beats */
     const D=dots[ORDER[LAST]], gl=G[ORDER[LAST]], f=D.frames.map(fr=>[sOf(fr[0]),fr[1],fr[2]]), n=f.length, sQ=CLD/(2*gl.r*k), atB=f[n-3][1], Q={x:CLX,y:CLY,r:0,s:sQ,o:1};
-    const sStar=13/(2*gl.r*k), walk=[]; ACTP.forEach((pt,i)=>{const st={x:pt[0],y:pt[1],r:0,s:sStar,o:1}; walk.push([ACTT[i],st],[ACTT[i]+ACTH,st])});
+    const sStar=13/(2*gl.r*k), lastP=ACTP[ACTP.length-1], park={x:lastP[0],y:lastP[1],r:0,s:sStar,o:1}, gone={...park,o:0}, sp=SA-S2, walk=[[S2+sp*.12,park],[S2+sp*.2,gone],[SA-.012,gone],[SA-.004,park]];
     D.byS=1; D.frames=f.slice(0,n-3).concat([[S1,atB],[SB-.03,atB],[SB+.035,Q],[S2,Q]],walk,[f[n-2],f[n-1]]); }
   /* hero copy */
   hero.frames=[[0,{x:narrow?W*.06:W*.065,y:narrow?H*.12:H*.15,o:1}],[.05,{x:narrow?W*.06:W*.065,y:narrow?H*.12:H*.15,o:1}],[.13,{x:narrow?W*.06:W*.065,y:H*.1,o:0}]];
@@ -540,7 +548,7 @@ document.addEventListener("pointerleave",()=>{ptx=pty=-9999;mxT=myT=0});
 /* ---------- scroll engine ----------
    Scroll position s runs 0..1. The story position p follows it, except for one held stop
    (the QDSAC page) where p waits while s keeps moving. */
-const HOLD_P=.875,S1=.504,SB=.588,S2=.696,SA=.9;
+const HOLD_P=.875,S1=.565,SB=.659,S2=.78,SA=.888;
 const storyP=s=>s<=S1?s/S1*HOLD_P:s<=SA?HOLD_P:HOLD_P+(s-SA)/(1-SA)*(1-HOLD_P);
 const sOf=p=>p<=HOLD_P?p/HOLD_P*S1:SA+(p-HOLD_P)/(1-HOLD_P)*(1-SA);
 const skyP=(s,p)=>s<S2?p:Math.max(p,HOLD_P+.06*sstep(S2,S2+(SA-S2)*.35,s));
@@ -643,7 +651,7 @@ function tick(now){
   requestAnimationFrame(tick);
 }
 addEventListener("scroll",readScroll,{passive:true});
-document.querySelectorAll("[data-go]").forEach(a=>a.addEventListener("click",e=>{e.preventDefault();closeDetail();const max=document.documentElement.scrollHeight-innerHeight;scrollTo({top:max*({top:0,about:sOf(.31),work:sOf(.67),club:(SB+S2)/2+.01,act:S2+(SA-S2)*.9,contact:1})[a.dataset.go],behavior:reduce?"auto":"smooth"})}));
+document.querySelectorAll("[data-go]").forEach(a=>a.addEventListener("click",e=>{e.preventDefault();closeDetail();const max=document.documentElement.scrollHeight-innerHeight;scrollTo({top:max*({top:0,about:sOf(.31),work:sOf(.67),club:(SB+S2)/2+.01,act:S2+(SA-S2)*.42,contact:1})[a.dataset.go],behavior:reduce?"auto":"smooth"})}));
 let rz; addEventListener("resize",()=>{clearTimeout(rz);rz=setTimeout(()=>{layout();readScroll()},120)});
 (document.fonts&&document.fonts.ready?document.fonts.ready:Promise.resolve()).then(()=>{
   layout();readScroll();cur=target;
